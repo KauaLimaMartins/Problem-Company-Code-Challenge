@@ -5,7 +5,7 @@
   ],
   "ignorePatterns": ["node_modules/", "dist/"],
   "rules": {
-    // "no-console": "error",
+    "no-console": "error",
     "react-hooks/exhaustive-deps": "off"
   }
 }
