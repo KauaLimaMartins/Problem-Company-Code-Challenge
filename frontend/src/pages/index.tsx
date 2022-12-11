@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import { CustomersTable } from "../components/CustomersTable";
 import { convertDate } from "../utils/convertDate";
-import { api } from "../services/axios";
+import axios from "axios";
 
 interface IHomePageProps {
   customers: ICustomer[];
@@ -42,9 +42,11 @@ export default function HomePage({ customers }: IHomePageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (_) => {
   try {
-    const response = await api.get<ICustomer[]>("/customers");
-
-    console.log(response);
+    // For some reason, to call the api in getServerSideProps we need to use the container name
+    // but in the frontend calls we need to use localhost looks like it is in src/services/api.ts
+    const response = await axios.get<ICustomer[]>(
+      "http://problem-api:8000/customers"
+    );
 
     response.data.forEach((customer) => {
       customer.CreatedAt = convertDate(customer.CreatedAt);
@@ -57,8 +59,6 @@ export const getServerSideProps: GetServerSideProps = async (_) => {
       },
     };
   } catch (err) {
-    console.warn(err);
-    console.log("asdasd");
     return {
       props: {
         customers: [],

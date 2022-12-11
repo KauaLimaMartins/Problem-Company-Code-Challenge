@@ -1,4 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/router";
+import { AxiosError } from "axios";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
@@ -6,10 +8,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { api } from "../services/axios";
-import { useRouter } from "next/router";
+
 import { validateEmail } from "../utils/validateEmail";
-import { AxiosError } from "axios";
+import { api } from "../services/api";
 
 interface ICreateCustomerDialogProps {
   isOpen: boolean;

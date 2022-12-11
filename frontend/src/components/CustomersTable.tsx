@@ -1,4 +1,5 @@
 import { DataGrid, GridRowId, GridColDef } from "@mui/x-data-grid";
+import { Dispatch, SetStateAction, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Delete from "@mui/icons-material/Delete";
@@ -6,11 +7,10 @@ import Add from "@mui/icons-material/Add";
 import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import Snackbar from "@mui/material/Snackbar/Snackbar";
-import { Dispatch, SetStateAction, useState } from "react";
-
-import { ConfirmationDialog } from "./ConfirmationDialog";
-import { api } from "../services/axios";
 import Alert from "@mui/material/Alert/Alert";
+
+import { api } from "../services/api";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 import { CreateCustomerDialog } from "./CreateCustomerDialog";
 import { EdtCustomerDialog } from "./EditCustomerDialog";
 
