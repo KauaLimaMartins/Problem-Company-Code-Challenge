@@ -14,7 +14,12 @@ In this readme you'll see:
 git clone https://github.com/KauaLimaMartins/Problem-Company-Code-Challenge.git
 ```
 
-- Now, open a terminal in the project directory and run:
+- Now, you need to create a new network bridge called "problem-net"
+```zsh
+docker network create -d bridge problem-net
+```
+
+- Open a terminal in the project directory and run:
 ```zsh
 docker compose up
 ```
