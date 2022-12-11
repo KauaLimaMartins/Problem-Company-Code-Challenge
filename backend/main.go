@@ -11,5 +11,6 @@ func main() {
 	database.ConnectWithDatabase()
 
 	fmt.Println("Go server started...")
+
 	routes.HandleRequest()
 }

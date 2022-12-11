@@ -1,5 +1,4 @@
-readme-assets
-test-project-backend.exe
+*.exe
 .gitignore
 .git
 README.md

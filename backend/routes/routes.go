@@ -20,11 +20,11 @@ func HandleRequest() {
 	r.HandleFunc("/customers", controller.CreateCustomer).Methods("POST")
 	r.HandleFunc("/customers/{id}", controller.EditCustomer).Methods("PUT")
 
-	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Origin", "Accept"})
 
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
 
-	origins := handlers.AllowedOrigins([]string{"http://localhost:3000"})
+	origins := handlers.AllowedOrigins([]string{"http://localhost:3000", "http://problem-site:3000"})
 
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(headers, methods, origins)(r)))
 }
