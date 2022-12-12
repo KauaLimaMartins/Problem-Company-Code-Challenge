@@ -1,5 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { useRouter } from "next/router";
+import { useState, Dispatch, SetStateAction, useContext } from "react";
 import { AxiosError } from "axios";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -11,6 +10,8 @@ import TextField from "@mui/material/TextField";
 
 import { validateEmail } from "../utils/validateEmail";
 import { api } from "../services/api";
+import { CustomersContext } from "../context/CustomersContext";
+import { convertDate } from "../utils/convertDate";
 
 interface ICreateCustomerDialogProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export function CreateCustomerDialog({
   isOpen,
   setSnackbarOptions,
 }: ICreateCustomerDialogProps) {
-  const router = useRouter();
+  const { customersList, setCustomersList } = useContext(CustomersContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,7 +67,7 @@ export function CreateCustomerDialog({
     setIsLoading(true);
 
     try {
-      await api.post("/customers", {
+      const { data } = await api.post<ICustomer>("/customers", {
         firstName: firstNameValue.trim(),
         lastName: lastNameValue.trim(),
         email: emailValue.trim(),
@@ -75,7 +76,16 @@ export function CreateCustomerDialog({
 
       setIsLoading(false);
 
-      router.reload();
+      setCustomersList([...customersList, {
+        ID: data.ID,
+        FirstName: data.FirstName,
+        LastName: data.LastName,
+        Email: data.Email,
+        CreatedAt: convertDate(data.CreatedAt),
+        UpdatedAt: convertDate(data.UpdatedAt),
+      }]);
+
+      handleClose();
     } catch (err) {
       setIsLoading(false);
 

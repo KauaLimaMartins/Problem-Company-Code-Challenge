@@ -1,5 +1,5 @@
 import { DataGrid, GridRowId, GridColDef } from "@mui/x-data-grid";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Delete from "@mui/icons-material/Delete";
@@ -13,16 +13,11 @@ import { api } from "../services/api";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { CreateCustomerDialog } from "./CreateCustomerDialog";
 import { EdtCustomerDialog } from "./EditCustomerDialog";
+import { CustomersContext } from "../context/CustomersContext";
 
-interface ICustomersTableProps {
-  customers: ICustomer[];
-  setCustomersList: Dispatch<SetStateAction<ICustomer[]>>;
-}
+export function CustomersTable() {
+  const { customersList, setCustomersList } = useContext(CustomersContext);
 
-export function CustomersTable({
-  customers,
-  setCustomersList,
-}: ICustomersTableProps) {
   const [isOpenConfirmationDialog, setIsOpenConfirmationDialog] =
     useState(false);
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
@@ -55,6 +50,8 @@ export function CustomersTable({
       setCustomersList((customersList) =>
         customersList.filter((customer) => !selectedIDs.has(customer.ID))
       );
+
+      setSelectedIds([]);
     } catch (err) {
       setSnackbarOptions({
         isOpen: true,
@@ -165,7 +162,7 @@ export function CustomersTable({
       <Box width="95%">
         <DataGrid
           getRowId={(customer) => customer.ID}
-          rows={customers}
+          rows={customersList}
           columns={columns}
           autoHeight
           pageSize={10}

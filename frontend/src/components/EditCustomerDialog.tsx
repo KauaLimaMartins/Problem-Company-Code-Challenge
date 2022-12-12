@@ -1,17 +1,18 @@
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { useState, Dispatch, SetStateAction, useEffect, useContext } from "react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { validateEmail } from "../utils/validateEmail";
 import { GridRowId } from "@mui/x-data-grid";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { api } from "../services/api";
+import { validateEmail } from "../utils/validateEmail";
+import { CustomersContext } from "../context/CustomersContext";
+import { convertDate } from "../utils/convertDate";
 
 interface IEditCustomerDialogProps {
   customerId: GridRowId;
@@ -26,7 +27,7 @@ export function EdtCustomerDialog({
   isOpen,
   setSnackbarOptions,
 }: IEditCustomerDialogProps) {
-  const router = useRouter();
+  const { customersList, setCustomersList } = useContext(CustomersContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -69,7 +70,7 @@ export function EdtCustomerDialog({
     setIsLoading(true);
 
     try {
-      await api.put(`/customers/${customerId}`, {
+      const { data } = await api.put<ICustomer>(`/customers/${customerId}`, {
         firstName: firstNameValue.trim(),
         lastName: lastNameValue.trim(),
         email: emailValue.trim(),
@@ -78,7 +79,24 @@ export function EdtCustomerDialog({
 
       setIsLoading(false);
 
-      router.reload();
+      const updatedCustomersList = customersList.map((customer) => {
+        if (customer.ID === customerId) {
+          return {
+            ID: data.ID,
+            FirstName: data.FirstName,
+            LastName: data.LastName,
+            Email: data.Email,
+            CreatedAt: convertDate(data.CreatedAt),
+            UpdatedAt: convertDate(data.UpdatedAt),
+          }
+        }
+
+        return customer;
+      });
+
+      setCustomersList(updatedCustomersList);
+
+      handleClose();
     } catch (err) {
       setSnackbarOptions({
         isOpen: true,

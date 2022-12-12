@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -6,13 +6,18 @@ import Typography from "@mui/material/Typography";
 import { CustomersTable } from "../components/CustomersTable";
 import { convertDate } from "../utils/convertDate";
 import axios from "axios";
+import { CustomersContext } from "../context/CustomersContext";
 
 interface IHomePageProps {
   customers: ICustomer[];
 }
 
 export default function HomePage({ customers }: IHomePageProps) {
-  const [customersList, setCustomersList] = useState<ICustomer[]>(customers);
+  const { setCustomersList } = useContext(CustomersContext);
+
+  useEffect(() => {
+    setCustomersList(customers);
+  }, []);
 
   return (
     <Box
@@ -32,10 +37,7 @@ export default function HomePage({ customers }: IHomePageProps) {
       >
         Customers
       </Typography>
-      <CustomersTable
-        setCustomersList={setCustomersList}
-        customers={customersList}
-      />
+      <CustomersTable />
     </Box>
   );
 }

@@ -5,7 +5,6 @@ interface ICustomer {
   Email: string;
   CreatedAt: string;
   UpdatedAt: string;
-  DeletedAt: string;
 }
 
 interface ISnackbarInfos {
