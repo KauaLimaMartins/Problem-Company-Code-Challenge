@@ -14,12 +14,14 @@ services:
       - POSTGRES_DB=postgres      
     ports:
       - "5432:5432"
+    networks:
+      - problem-net
   
   problem-api:
     build: "./backend"
     container_name: problem-api
     environment:
-      - DB_HOST=host.docker.internal
+      - DB_HOST=problem-db
       - DB_USER=postgres
       - DB_PASS=postgres      
       - DB_NAME=postgres
@@ -27,8 +29,9 @@ services:
       - "8000:8000"
     networks:
       - problem-net
-    links:
+    depends_on:
       - problem-db
+    restart: on-failure
   
   problem-site:
     build: "./frontend"
