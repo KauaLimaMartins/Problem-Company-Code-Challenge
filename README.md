@@ -23,7 +23,7 @@ docker network create -d bridge problem-net
 ```zsh
 docker compose up
 ```
-Note: If for some reason you get a "failed to connect to database" error message atfer it finishes, just stop it and run it again that this will be solved
+Note: If you see a "failed to connect to the database" error message, probably the server tried to start before the database completly run, so do not worry, because it will run again to connect correctly after database successfully starts.
 
 - After it ends, open in your browser the frontend URL:
 ```
